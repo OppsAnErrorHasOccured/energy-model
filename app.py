@@ -1,3 +1,22 @@
+import base64
+import numpy as np
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+
+# Page Config
+st.set_page_config(
+    page_title="Heavy-Duty Fleet Decarbonization Model", layout="wide"
+)
+
+st.title("⚡ Heavy-Duty Fleet Decarbonization Evaluation Model")
+st.markdown("---")
+
+# Setup 3 Tabs
+tab1, tab2, tab3 = st.tabs(
+    ["📊 Interactive Model", "📐 Governing Equations", "📄 Technical Report"]
+)
+
 # ==========================================
 # TAB 1: INTERACTIVE MODEL
 # ==========================================
@@ -57,14 +76,12 @@ with tab1:
   bev_mass = 2734.3
 
   # --- MULTI-CRITERIA WEIGHTED SCORING ENGINE ---
-  # Normalize raw values (Lower is better for Cost, Energy, Mass)
   costs = np.array([diesel_annual_cost, h2_annual_cost, bev_annual_cost])
   energies = np.array(
       [diesel_annual_energy, h2_annual_energy, bev_annual_energy_mj]
   )
   masses = np.array([diesel_mass, h2_mass, bev_mass])
 
-  # Score from 0 to 1 (1 = best)
   score_cost = 1 - (
       (costs - costs.min()) / (costs.max() - costs.min() + 1e-6)
   )
@@ -75,12 +92,9 @@ with tab1:
       (masses - masses.min()) / (masses.max() - masses.min() + 1e-6)
   )
 
-  # Fixed Qualitative Scores for Infra & Emissions (0 to 1)
-  # [Diesel, Hydrogen, BEV]
-  score_infra = np.array([1.0, 0.3, 0.6])  # Diesel infra exists everywhere
-  score_emissions = np.array([0.0, 0.7, 1.0])  # BEV has zero tailpipe emissions
+  score_infra = np.array([1.0, 0.3, 0.6])
+  score_emissions = np.array([0.0, 0.7, 1.0])
 
-  # Calculate Total Composite Weighted Score
   total_weight = w_cost + w_mass + w_eff + w_infra + w_emissions
   if total_weight == 0:
     total_weight = 1
@@ -148,3 +162,80 @@ with tab1:
         labels={"value": "Cost ($)", "variable": "Powertrain"},
     )
     st.plotly_chart(fig, use_container_width=True)
+
+# ==========================================
+# TAB 2: GOVERNING EQUATIONS
+# ==========================================
+with tab2:
+  st.header("📐 Governing Physics & Methodology")
+  st.markdown(
+      "Below are the primary physical relationships used to calculate powertrain"
+      " energy demands:"
+  )
+
+  col_eq1, col_eq2 = st.columns(2)
+
+  with col_eq1:
+    st.markdown("### 1. Aerodynamic Drag Force")
+    st.latex(r"F_d = \frac{1}{2} \cdot \rho \cdot A \cdot C_d \cdot v^2")
+    st.write("""
+        - $F_d$: Aerodynamic Drag Force ($N$)
+        - $\\rho$: Air Density ($1.225 \\text{ kg/m}^3$)
+        - $A$: Frontal Area ($10 \\text{ m}^2$)
+        - $C_d$: Drag Coefficient ($0.9$)
+        - $v$: Vehicle Velocity ($\\text{m/s}$)
+        """)
+
+    st.markdown("### 2. Rolling Resistance Force")
+    st.latex(r"F_{rr} = C_{rr} \cdot m \cdot g")
+    st.write("""
+        - $F_{rr}$: Rolling Resistance Force ($N$)
+        - $C_{rr}$: Coefficient of Rolling Resistance ($0.01$)
+        - $m$: Vehicle Mass ($\\text{kg}$)
+        - $g$: Gravitational Acceleration ($9.81 \\text{ m/s}^2$)
+        """)
+
+  with col_eq2:
+    st.markdown("### 3. Acceleration Energy Demand")
+    st.latex(r"E_{acc} = \frac{1}{2} \cdot m \cdot v^2 \cdot N_{stops}")
+    st.write("""
+        - Calculates total kinetic energy loss across start-stop cycles over the daily route distance.
+        """)
+
+    st.markdown("### 4. Total Energy & Powertrain Efficiency")
+    st.latex(
+        r"E_{required} = \frac{E_{drag} + E_{rr} +"
+        r" E_{acc}}{\eta_{powertrain}}"
+    )
+    st.write("""
+        - **Diesel Efficiency ($\\\\eta$):** $25\\\\%$
+        - **Hydrogen Fuel Cell Efficiency ($\\\\eta$):** $50\\\\%$
+        - **Battery Electric Efficiency ($\\\\eta$):** $90\\\\%$
+        """)
+
+# ==========================================
+# TAB 3: TECHNICAL REPORT PDF
+# ==========================================
+with tab3:
+  st.header("📄 Technical Research Paper")
+  st.markdown(
+      "Read the complete methodology, assumptions, and research findings"
+      " below:"
+  )
+
+  pdf_filename = "technical_report.pdf"
+
+  try:
+    with open(pdf_filename, "rb") as f:
+      base64_pdf = base64.b64encode(f.read()).decode("utf-8")
+
+    pdf_display = (
+        f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%"'
+        ' height="800" type="application/pdf"></iframe>'
+    )
+    st.markdown(pdf_display, unsafe_allow_html=True)
+  except FileNotFoundError:
+    st.warning(
+        "⚠️ `technical_report.pdf` not found in directory. Upload your PDF to"
+        " GitHub named `technical_report.pdf` when ready to enable the viewer."
+    )
