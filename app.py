@@ -21,7 +21,6 @@ C_DIESEL = "#718096"  # Slate Gray
 C_HYDROGEN = "#2B6CB0"  # Bright Samurai / Royal Blue
 C_BATTERY = "#2F9E44"  # Vibrant Emerald Sage
 
-# Brightened, Rich Pastel/Vibrant Palette
 PALETTE = [
     "#2B6CB0",  # Bright Samurai Blue
     "#2F9E44",  # Vibrant Emerald Sage
@@ -321,7 +320,7 @@ def clamp_weights(changed_key: str) -> None:
 
 
 # ==========================================================
-# SIDEBAR — INPUTS
+# SIDEBAR — INPUTS (REORDERED)
 # ==========================================================
 with st.sidebar:
   st.markdown(
@@ -333,13 +332,44 @@ with st.sidebar:
       unsafe_allow_html=True,
   )
 
+  # 1. ROUTE & SPEED PARAMETERS
   st.markdown("<div class='side-group'>Route</div>", unsafe_allow_html=True)
   route_dist = st.slider("Daily route distance (miles)", 5, 500, 15, step=5)
   operating_days = st.number_input(
       "Operating days per year", 100, 365, 355, step=5
   )
   n_stops = st.slider("Stops per day", 0, 400, 100, step=10)
+  avg_speed = st.slider("Average operating speed (mph)", 5, 65, 15, step=1)
 
+  # 2. DECISION WEIGHTS
+  st.markdown(
+      "<div class='side-group'>Decision weights</div>", unsafe_allow_html=True
+  )
+  used = sum(st.session_state[k] for k in WEIGHTS)
+  remaining = WEIGHT_CAP - used
+  st.markdown(
+      f"<div class='budget-track'><div class='budget-fill "
+      f"{'full' if remaining == 0 else ''}' style='width:{used}%;'></div></div>"
+      f"<div class='budget-text'><b>{used}%</b> allocated · "
+      f"<b>{remaining}%</b> left of the 100% budget</div>",
+      unsafe_allow_html=True,
+  )
+
+  for key, (label, _default) in WEIGHTS.items():
+    headroom = WEIGHT_CAP - sum(
+        st.session_state[k] for k in WEIGHTS if k != key
+    )
+    st.slider(
+        label,
+        min_value=0,
+        max_value=WEIGHT_CAP,
+        step=5,
+        key=key,
+        on_change=clamp_weights,
+        args=(key,),
+    )
+
+  # 3. ENERGY PRICES
   st.markdown(
       "<div class='side-group'>Energy prices</div>", unsafe_allow_html=True
   )
@@ -347,6 +377,7 @@ with st.sidebar:
   h2_price = st.number_input("Hydrogen ($/kg)", 1.0, 60.0, 33.00, step=1.00)
   elec_price = st.number_input("Electricity ($/kWh)", 0.02, 1.00, 0.31, step=0.01)
 
+  # 4. ADVANCED SETTINGS DROPDOWN
   with st.expander("Advanced settings"):
     st.caption(
         "Vehicle geometry, road-load coefficients and secondary loads. "
@@ -355,7 +386,6 @@ with st.sidebar:
     )
 
     st.markdown("<div class='side-group'>Vehicle</div>", unsafe_allow_html=True)
-    avg_speed = st.slider("Average operating speed (mph)", 5, 65, 15, step=1)
     curb_weight = st.number_input(
         "Chassis curb weight (lbs)", 10000, 60000, 30000, step=1000
     )
@@ -409,33 +439,6 @@ with st.sidebar:
     aux_pct = st.slider("Auxiliary + cabin HVAC uplift (%)", 0, 40, 0, step=1)
     regen_pct = st.slider(
         "Regenerative braking recovery (%)", 0, 70, 0, step=5
-    )
-
-  st.markdown(
-      "<div class='side-group'>Decision weights</div>", unsafe_allow_html=True
-  )
-  used = sum(st.session_state[k] for k in WEIGHTS)
-  remaining = WEIGHT_CAP - used
-  st.markdown(
-      f"<div class='budget-track'><div class='budget-fill "
-      f"{'full' if remaining == 0 else ''}' style='width:{used}%;'></div></div>"
-      f"<div class='budget-text'><b>{used}%</b> allocated · "
-      f"<b>{remaining}%</b> left of the 100% budget</div>",
-      unsafe_allow_html=True,
-  )
-
-  for key, (label, _default) in WEIGHTS.items():
-    headroom = WEIGHT_CAP - sum(
-        st.session_state[k] for k in WEIGHTS if k != key
-    )
-    st.slider(
-        label,
-        min_value=0,
-        max_value=WEIGHT_CAP,
-        step=5,
-        key=key,
-        on_change=clamp_weights,
-        args=(key,),
     )
 
 w_cost = st.session_state["w_cost"]
