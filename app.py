@@ -671,10 +671,10 @@ def score_card(tech: str, score: float, rows: list, winner: bool,
 st.markdown(
     "<div class='eyebrow'>Urban municipal truck · duty-cycle study</div>"
     "<div class='headline'>Powertrain<br>Energy Model</div>"
-    "<div class='subhead'>A physics-first comparison of diesel, hydrogen fuel cell "
-    "and battery electric drivelines — built from tractive-energy demand, not "
-    "sticker specifications. Set a route and prices to get an answer; open "
-    "Advanced settings to change the vehicle itself.</div>",
+    "<div class='subhead'>A physics-driven analysis of diesel, hydrogen fuel-cell, "
+    "and battery-electric drivetrains – based on tractive energy requirements, "
+    "not spec sheets. Pick a route and costs to get your answer; click the "
+    "Advanced button to alter the car’s specifications.</div>",
     unsafe_allow_html=True,
 )
 
