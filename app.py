@@ -15,18 +15,18 @@ st.set_page_config(
 )
 
 # ==========================================================
-# DESIGN TOKENS
+# DESIGN TOKENS — SAMURAI / NAVY DARK MODE
 # ==========================================================
-INK = "#1d1d1f"          # primary text
-SUBTLE = "#6e6e73"       # secondary text
-HAIRLINE = "#d2d2d7"     # dividers
-CANVAS = "#f5f5f7"       # page background
-SURFACE = "#ffffff"      # card background
-ACCENT = "#0071e3"       # system blue
+INK = "#f0f4f8"          # primary light text (replaces black)
+SUBTLE = "#94a3b8"       # secondary muted text
+HAIRLINE = "#1e293b"     # subtle dividers
+CANVAS = "#0b1320"       # page background (deep Samurai Blue)
+SURFACE = "#131c2e"      # card background (dark steel navy)
+ACCENT = "#38bdf8"       # vibrant sky blue accent
 
-C_DIESEL = "#8e8e93"     # graphite
-C_HYDROGEN = "#5e5ce6"   # indigo
-C_BATTERY = "#30b158"    # green
+C_DIESEL = "#94a3b8"     # slate grey
+C_HYDROGEN = "#818cf8"   # indigo blue
+C_BATTERY = "#34d399"    # emerald green
 
 TECH_COLORS = {
     "Diesel": C_DIESEL,
@@ -54,19 +54,16 @@ st.markdown(
       }}
 
       /* ---------- HEADER FIX FOR SIDEBAR BUTTON ---------- */
-      /* Keep the header container visible/transparent so sidebar toggle icon remains functional */
       header[data-testid="stHeader"] {{
         background: transparent !important;
         z-index: 99999 !important;
       }}
       
-      /* Hide top decor line, menu button, and footer */
       #MainMenu, footer, [data-testid="stDecoration"], [data-testid="stStatusWidget"] {{
         visibility: hidden !important;
         display: none !important;
       }}
 
-      /* Force sidebar control button to stay visible, styled, and clickable */
       [data-testid="stSidebarCollapsedControl"], 
       [data-testid="stSidebarExpandButton"] {{
         visibility: visible !important;
@@ -89,6 +86,7 @@ st.markdown(
         font-weight: 600;
         letter-spacing: -0.028em;
         line-height: 1.05;
+        color: {INK};
         margin: 0 0 0.55rem 0;
       }}
       .subhead {{
@@ -104,6 +102,7 @@ st.markdown(
         font-size: 1.55rem;
         font-weight: 600;
         letter-spacing: -0.02em;
+        color: {INK};
         margin: 0 0 0.25rem 0;
       }}
       .section-note {{
@@ -117,16 +116,18 @@ st.markdown(
         background: {SURFACE};
         border-radius: 20px;
         padding: 1.6rem 1.75rem;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 28px rgba(0,0,0,0.05);
+        border: 1px solid {HAIRLINE};
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         margin-bottom: 1.1rem;
       }}
 
       /* ---------- Hero: the recommendation ---------- */
       .hero {{
-        background: linear-gradient(160deg, #ffffff 0%, #f0f4fb 100%);
+        background: linear-gradient(160deg, #182338 0%, #0f172a 100%);
         border-radius: 26px;
         padding: 2.1rem 2.3rem 1.9rem 2.3rem;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 18px 44px rgba(0,0,0,0.07);
+        border: 1px solid {HAIRLINE};
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         margin-bottom: 1.35rem;
       }}
       .hero-label {{
@@ -160,13 +161,14 @@ st.markdown(
         background: {SURFACE};
         border-radius: 20px;
         padding: 1.35rem 1.5rem 1.5rem 1.5rem;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 26px rgba(0,0,0,0.05);
+        border: 1px solid {HAIRLINE};
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         height: 100%;
       }}
-      .score-card.win {{ box-shadow: 0 0 0 2px {ACCENT}, 0 10px 30px rgba(0,113,227,0.16); }}
+      .score-card.win {{ box-shadow: 0 0 0 2px {ACCENT}, 0 10px 30px rgba(56, 189, 248, 0.25); }}
       .score-tech {{
         font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em;
-        display: flex; align-items: center; gap: 0.5rem;
+        color: {INK}; display: flex; align-items: center; gap: 0.5rem;
       }}
       .dot {{ width: 9px; height: 9px; border-radius: 50%; display: inline-block; }}
       .score-value {{
@@ -175,41 +177,42 @@ st.markdown(
       }}
       .score-sub {{ font-size: 0.83rem; color: {SUBTLE}; letter-spacing: 0.01em; }}
       .bar-track {{
-        height: 6px; border-radius: 99px; background: #e8e8ed;
+        height: 6px; border-radius: 99px; background: #1e293b;
         margin: 0.95rem 0 0.85rem 0; overflow: hidden;
       }}
       .bar-fill {{ height: 6px; border-radius: 99px; }}
       .kv {{
         display: flex; justify-content: space-between;
         font-size: 0.88rem; padding: 0.28rem 0;
-        border-bottom: 1px solid #f0f0f2;
+        border-bottom: 1px solid #1e293b;
       }}
       .kv:last-child {{ border-bottom: none; }}
       .kv span:first-child {{ color: {SUBTLE}; }}
-      .kv span:last-child {{ font-weight: 500; font-variant-numeric: tabular-nums; }}
-      .score-card.out {{ opacity: 0.62; }}
-      .badge.fail {{ background: #ff453a; }}
-      .kv span.warn {{ color: #d70015; font-weight: 600; }}
+      .kv span:last-child {{ font-weight: 500; color: {INK}; font-variant-numeric: tabular-nums; }}
+      .score-card.out {{ opacity: 0.5; }}
+      .badge.fail {{ background: #f87171; }}
+      .kv span.warn {{ color: #f87171; font-weight: 600; }}
       .badge {{
-        display: inline-block; background: {ACCENT}; color: #fff;
-        font-size: 0.68rem; font-weight: 600; letter-spacing: 0.07em;
+        display: inline-block; background: {ACCENT}; color: #0b1320;
+        font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em;
         text-transform: uppercase; padding: 0.2rem 0.55rem;
         border-radius: 99px; margin-left: 0.4rem;
       }}
 
       /* ---------- Weight budget ---------- */
       .budget-track {{
-        height: 8px; border-radius: 99px; background: #e8e8ed;
+        height: 8px; border-radius: 99px; background: #1e293b;
         overflow: hidden; margin: 0.4rem 0 0.35rem 0;
       }}
       .budget-fill {{ height: 8px; border-radius: 99px; background: {ACCENT}; }}
-      .budget-fill.full {{ background: #30b158; }}
+      .budget-fill.full {{ background: #34d399; }}
       .budget-text {{ font-size: 0.82rem; color: {SUBTLE}; }}
 
       /* ---------- Equation blocks ---------- */
       .eq-card {{
         background: {SURFACE}; border-radius: 18px; padding: 1.35rem 1.5rem;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 6px 22px rgba(0,0,0,0.045);
+        border: 1px solid {HAIRLINE};
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         margin-bottom: 1rem;
       }}
       .eq-num {{
@@ -218,7 +221,7 @@ st.markdown(
       }}
       .eq-title {{
         font-size: 1.12rem; font-weight: 600; letter-spacing: -0.015em;
-        margin: 0.2rem 0 0.15rem 0;
+        color: {INK}; margin: 0.2rem 0 0.15rem 0;
       }}
       .eq-body {{ font-size: 0.9rem; color: {SUBTLE}; line-height: 1.6; }}
       .eq-body b {{ color: {INK}; font-weight: 500; }}
@@ -252,13 +255,13 @@ st.markdown(
         font-size: 0.95rem; font-weight: 500; letter-spacing: -0.01em;
         padding: 0.55rem 0.9rem; color: {SUBTLE};
       }}
-      .stTabs [aria-selected="true"] {{ color: {INK}; font-weight: 600; }}
+      .stTabs [aria-selected="true"] {{ color: {INK}; font-weight: 600; border-bottom-color: {ACCENT} !important; }}
 
       /* ---------- Controls ---------- */
       .stSlider [data-baseweb="slider"] div[role="slider"] {{
-        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.4);
       }}
-      div[data-testid="stDataFrame"] {{ border-radius: 14px; overflow: hidden; }}
+      div[data-testid="stDataFrame"] {{ border-radius: 14px; overflow: hidden; border: 1px solid {HAIRLINE}; }}
       hr.rule {{ border: none; border-top: 1px solid {HAIRLINE}; margin: 2.4rem 0 1.8rem 0; }}
     </style>
     """,
@@ -352,7 +355,7 @@ def clamp_weights(changed_key: str) -> None:
 # ==========================================================
 with st.sidebar:
     st.markdown(
-        f"<div style='font-size:1.15rem;font-weight:600;letter-spacing:-0.02em;'>"
+        f"<div style='font-size:1.15rem;font-weight:600;letter-spacing:-0.02em;color:{INK};'>"
         f"Model inputs</div>"
         f"<div style='font-size:0.86rem;color:{SUBTLE};margin-top:0.15rem;'>"
         f"Set the route, the prices and what matters to you. Everything else "
@@ -367,7 +370,7 @@ with st.sidebar:
 
     st.markdown("<div class='side-group'>Energy prices</div>", unsafe_allow_html=True)
     diesel_price = st.number_input("Diesel ($/gal)", 1.0, 15.0, 5.30, step=0.10)
-    h2_price = st.number_input("Hydrogen ($/kg)", 1.0, 60.0, 32.00, step=1.00)
+    h2_price = st.number_input("Hydrogen ($/kg)", 1.0, 60.0, 33.00, step=1.00)
     elec_price = st.number_input("Electricity ($/kWh)", 0.02, 1.00, 0.31, step=0.01)
 
     # ---------- Advanced settings ----------
@@ -549,8 +552,6 @@ annual_energy = daily_energy * operating_days
 annual_co2 = daily_co2 * operating_days
 
 # --- Payload accounting ------------------------------------------------------
-# The energy system competes with cargo for the same weight allowance, so a
-# longer route displaces payload. This is where duty cycle changes the ranking.
 rated_capacity_kg = max((gvwr - curb_weight) * LB_TO_KG, 0.0)   # payload if energy were weightless
 usable_payload = rated_capacity_kg - system_mass                 # kg of cargo left
 required_payload = payload * LB_TO_KG
@@ -562,7 +563,7 @@ any_feasible = bool(feasible.any())
 
 
 # ==========================================================
-# SCORING  (ratio normalization, per Decision Logic sheet)
+# SCORING
 # ==========================================================
 def lower_is_better(x: np.ndarray) -> np.ndarray:
     x = np.where(x <= 0, 1e-9, x)
@@ -575,9 +576,6 @@ def higher_is_better(x: np.ndarray) -> np.ndarray:
 
 
 s_cost = lower_is_better(annual_cost)
-# Payload score: cargo capacity left after the energy system takes its share,
-# normalized against whichever technology leaves the most. A vehicle that
-# cannot carry the required load scores zero here and is barred from winning.
 s_mass = np.where(feasible, higher_is_better(np.maximum(usable_payload, 0.0)), 0.0)
 s_eff = higher_is_better(efficiency)
 s_infra = np.array([INFRA[t] for t in TECHS])
@@ -594,8 +592,6 @@ composite = (
     + s_emis * w_emis
 ) / denom
 
-# A technology that cannot carry the required payload is not a candidate,
-# however well it scores elsewhere.
 eligible = composite if not any_feasible else np.where(feasible, composite, -np.inf)
 best_idx = int(np.argmax(eligible))
 best_tech = TECHS[best_idx]
@@ -643,7 +639,7 @@ results = pd.DataFrame(
 # ==========================================================
 def score_card(tech: str, score: float, rows: list, winner: bool,
                ok: bool = True) -> str:
-    color = TECH_COLORS[tech] if ok else "#c7c7cc"
+    color = TECH_COLORS[tech] if ok else "#64748b"
     badge = "<span class='badge'>Recommended</span>" if winner else ""
     if not ok:
         badge = "<span class='badge fail'>Payload short</span>"
@@ -796,21 +792,23 @@ with tab1:
             )
         )
     fig_p.add_hline(
-        y=required_payload, line_dash="dash", line_color="#ff453a",
+        y=required_payload, line_dash="dash", line_color="#f87171",
         annotation_text=f"Required payload — {required_payload:,.0f} kg",
         annotation_position="bottom right",
+        annotation_font_color="#f87171"
     )
     fig_p.add_vline(x=route_dist, line_dash="dot", line_color=SUBTLE,
-                    annotation_text="Your route", annotation_position="top left")
+                    annotation_text="Your route", annotation_position="top left",
+                    annotation_font_color=SUBTLE)
     fig_p.update_layout(
-        template="simple_white", height=420,
+        template="plotly_dark", height=420,
         margin=dict(l=10, r=10, t=30, b=10),
         font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
                   color=INK, size=12),
         legend=dict(orientation="h", y=1.12, x=0, title=None),
         xaxis_title="Daily route distance (miles)",
         yaxis_title="Payload capacity remaining (kg)",
-        hovermode="x unified", plot_bgcolor="white", paper_bgcolor="white",
+        hovermode="x unified", plot_bgcolor=SURFACE, paper_bgcolor=CANVAS,
     )
     st.plotly_chart(fig_p, **FULL)
 
@@ -836,7 +834,7 @@ with tab1:
             },
             index=TECHS,
         )
-        palette = ["#0071e3", "#5e5ce6", "#30b158", "#ff9f0a", "#ff453a"]
+        palette = ["#38bdf8", "#818cf8", "#34d399", "#fbbf24", "#f87171"]
         fig_c = go.Figure()
         for j, col in enumerate(contrib.columns):
             fig_c.add_bar(
@@ -848,15 +846,15 @@ with tab1:
             )
         fig_c.update_layout(
             barmode="stack",
-            template="simple_white",
+            template="plotly_dark",
             height=380,
             margin=dict(l=10, r=10, t=10, b=10),
             font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
                       color=INK, size=12),
             legend=dict(orientation="h", y=-0.18, x=0, title=None),
             yaxis_title="Points",
-            plot_bgcolor="white",
-            paper_bgcolor="white",
+            plot_bgcolor=SURFACE,
+            paper_bgcolor=CANVAS,
         )
         st.plotly_chart(fig_c, **FULL)
 
@@ -878,21 +876,21 @@ with tab1:
                 x=breakdown["MJ"],
                 y=breakdown["Component"],
                 orientation="h",
-                marker_color=["#0071e3", "#5e5ce6", "#30b158"],
+                marker_color=["#38bdf8", "#818cf8", "#34d399"],
                 text=[f"{x:,.1f} MJ" for x in breakdown["MJ"]],
                 textposition="outside",
                 hovertemplate="%{y}: %{x:.2f} MJ<extra></extra>",
             )
         )
         fig_b.update_layout(
-            template="simple_white",
+            template="plotly_dark",
             height=380,
             margin=dict(l=10, r=40, t=10, b=10),
             font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
                       color=INK, size=12),
             xaxis_title="MJ per day",
-            plot_bgcolor="white",
-            paper_bgcolor="white",
+            plot_bgcolor=SURFACE,
+            paper_bgcolor=CANVAS,
         )
         st.plotly_chart(fig_b, **FULL)
 
@@ -935,7 +933,7 @@ with tab1:
             )
         )
     fig_t.update_layout(
-        template="simple_white",
+        template="plotly_dark",
         height=420,
         margin=dict(l=10, r=10, t=10, b=10),
         font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
@@ -944,8 +942,8 @@ with tab1:
         xaxis_title="Year",
         yaxis_title="Cumulative cost ($)",
         hovermode="x unified",
-        plot_bgcolor="white",
-        paper_bgcolor="white",
+        plot_bgcolor=SURFACE,
+        paper_bgcolor=CANVAS,
     )
     st.plotly_chart(fig_t, **FULL)
 
@@ -991,13 +989,13 @@ with tab2:
     st.markdown(
         f"""
         <div class='card'>
-          <div style='display:flex;flex-wrap:wrap;gap:1.6rem;font-size:0.92rem;'>
+          <div style='display:flex;flex-wrap:wrap;gap:1.6rem;font-size:0.92rem;color:{INK};'>
             <div><b>Stage 1</b><br><span style='color:{SUBTLE};'>Road load → wheel energy</span></div>
-            <div style='color:{HAIRLINE};'>→</div>
+            <div style='color:{SUBTLE};'>→</div>
             <div><b>Stage 2</b><br><span style='color:{SUBTLE};'>Wheel energy ÷ efficiency</span></div>
-            <div style='color:{HAIRLINE};'>→</div>
+            <div style='color:{SUBTLE};'>→</div>
             <div><b>Stage 3</b><br><span style='color:{SUBTLE};'>Energy → fuel, cost, CO₂</span></div>
-            <div style='color:{HAIRLINE};'>→</div>
+            <div style='color:{SUBTLE};'>→</div>
             <div><b>Stage 4</b><br><span style='color:{SUBTLE};'>Normalize and weight</span></div>
           </div>
         </div>
@@ -1435,14 +1433,14 @@ with tab3:
         st.markdown(
             f"<iframe src='data:application/pdf;base64,{base64_pdf}' width='100%' "
             f"height='820' style='border:none;border-radius:18px;"
-            f"box-shadow:0 8px 28px rgba(0,0,0,0.08);'></iframe>",
+            f"box-shadow:0 8px 28px rgba(0,0,0,0.5);'></iframe>",
             unsafe_allow_html=True,
         )
     except FileNotFoundError:
         st.markdown(
             f"""
             <div class='card' style='text-align:center;padding:3.2rem 2rem;'>
-              <div style='font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;'>
+              <div style='font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:{INK};'>
                 No report loaded yet
               </div>
               <div style='color:{SUBTLE};font-size:0.95rem;margin-top:0.5rem;
