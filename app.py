@@ -15,19 +15,19 @@ st.set_page_config(
 )
 
 # ==========================================================
-# DESIGN TOKENS & SAMURAI BLUE / MUTED PASTEL PALETTE
+# DESIGN TOKENS & VIBRANT PALETTE (VIBRANCY LEVEL 6.5/10)
 # ==========================================================
-C_DIESEL = "#6C757D"  # Muted Slate
-C_HYDROGEN = "#1D3557"  # Samurai Blue
-C_BATTERY = "#386641"  # Deep Muted Sage
+C_DIESEL = "#718096"  # Slate Gray
+C_HYDROGEN = "#2B6CB0"  # Bright Samurai / Royal Blue
+C_BATTERY = "#2F9E44"  # Vibrant Emerald Sage
 
-# Muted Pastel / Darker Palette (Samurai Blue base)
+# Brightened, Rich Pastel/Vibrant Palette
 PALETTE = [
-    "#1D3557",  # Samurai Blue
-    "#386641",  # Muted Sage Green
-    "#6A4C93",  # Deep Muted Plum/Purple
-    "#D97706",  # Muted Amber / Ochre
-    "#C1121F",  # Muted Dark Coral / Red
+    "#2B6CB0",  # Bright Samurai Blue
+    "#2F9E44",  # Vibrant Emerald Sage
+    "#8B5CF6",  # Rich Modern Violet
+    "#E59819",  # Vibrant Warm Gold/Amber
+    "#E53E3E",  # Bright Coral Red
 ]
 
 FONT_FAMILY = (
@@ -52,7 +52,7 @@ st.markdown(
         --hairline: #e2e8f0;
         --canvas: #f8fafc;
         --surface: #ffffff;
-        --accent: #1D3557;
+        --accent: #2B6CB0;
         --hero-bg: linear-gradient(160deg, #ffffff 0%, #f0f4fb 100%);
         --shadow: rgba(0, 0, 0, 0.05);
         --plot-bg: #ffffff;
@@ -65,7 +65,7 @@ st.markdown(
           --hairline: #1e293b;
           --canvas: #0b1320;
           --surface: #131c2e;
-          --accent: #457b9d;
+          --accent: #3182ce;
           --hero-bg: linear-gradient(160deg, #182338 0%, #0f172a 100%);
           --shadow: rgba(0, 0, 0, 0.3);
           --plot-bg: #131c2e;
@@ -184,8 +184,8 @@ st.markdown(
       .kv span:first-child {{ color: var(--subtle); }}
       .kv span:last-child {{ font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }}
       .score-card.out {{ opacity: 0.5; }}
-      .badge.fail {{ background: #C1121F; }}
-      .kv span.warn {{ color: #C1121F; font-weight: 600; }}
+      .badge.fail {{ background: #E53E3E; }}
+      .kv span.warn {{ color: #E53E3E; font-weight: 600; }}
       .badge {{
         display: inline-block; background: var(--accent); color: #ffffff;
         font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em;
@@ -197,7 +197,7 @@ st.markdown(
         overflow: hidden; margin: 0.4rem 0 0.35rem 0;
       }}
       .budget-fill {{ height: 8px; border-radius: 99px; background: var(--accent); }}
-      .budget-fill.full {{ background: #386641; }}
+      .budget-fill.full {{ background: #2F9E44; }}
       .budget-text {{ font-size: 0.82rem; color: var(--subtle); }}
 
       .eq-card {{
@@ -659,7 +659,7 @@ with tab1:
         unsafe_allow_html=True,
     )
 
-  # ---------- SCORECARD SECTION (MOVED ABOVE CHARTS) ----------
+  # ---------- SCORECARD SECTION ----------
   st.markdown(
       "<div class='section-title'>Scorecard</div>"
       "<div class='section-note'>Each criterion is normalized against the best "
@@ -849,14 +849,14 @@ with tab1:
   fig_p.add_hline(
       y=required_payload,
       line_dash="dash",
-      line_color="#C1121F",
+      line_color="#E53E3E",
       annotation_text=f"Required payload — {required_payload:,.0f} kg",
       annotation_position="bottom right",
   )
   fig_p.add_vline(
       x=route_dist,
       line_dash="dot",
-      line_color="#6C757D",
+      line_color="#718096",
       annotation_text="Your route",
       annotation_position="top left",
   )
