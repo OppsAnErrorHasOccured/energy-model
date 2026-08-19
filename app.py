@@ -53,12 +53,22 @@ st.markdown(
         max-width: 1320px;
       }}
 
-      /* Hide header elements BUT bring back the sidebar toggle button */
-      #MainMenu, footer {{ visibility: hidden; }}
-      header {{ visibility: hidden; }}
-      [data-testid="stSidebarCollapsedControl"] {{
-        visibility: visible !important;
-      }}
+/* Hide standard header elements */
+#MainMenu, footer {{ visibility: hidden; }}
+header {{ visibility: hidden; }}
+
+/* Force BOTH the open and close sidebar buttons to stay visible */
+[data-testid="stSidebarCollapsedControl"],
+[data-testid="stSidebarHeader"] {{
+  visibility: visible !important;
+}}
+
+/* Move the open button down slightly so it isn't cut off at the very top */
+[data-testid="stSidebarCollapsedControl"] {{
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 999999;
+}}
 
       /* ---------- Typography ---------- */
       .eyebrow {{
