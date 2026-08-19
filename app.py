@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # ==========================================================
-# DESIGN TOKENS & VIBRANT PALETTE (VIBRANCY LEVEL 6.5/10)
+# DESIGN TOKENS & VIBRANT PALETTE
 # ==========================================================
 C_DIESEL = "#718096"  # Slate Gray
 C_HYDROGEN = "#2B6CB0"  # Bright Samurai / Royal Blue
@@ -320,7 +320,7 @@ def clamp_weights(changed_key: str) -> None:
 
 
 # ==========================================================
-# SIDEBAR — INPUTS (REORDERED)
+# SIDEBAR — INPUTS
 # ==========================================================
 with st.sidebar:
   st.markdown(
@@ -433,14 +433,6 @@ with st.sidebar:
     _v_ms = avg_speed * MPH_TO_MS
     t_accel = _v_ms / accel_rate
 
-    st.markdown(
-        "<div class='side-group'>Secondary loads</div>", unsafe_allow_html=True
-    )
-    aux_pct = st.slider("Auxiliary + cabin HVAC uplift (%)", 0, 40, 0, step=1)
-    regen_pct = st.slider(
-        "Regenerative braking recovery (%)", 0, 70, 0, step=5
-    )
-
 w_cost = st.session_state["w_cost"]
 w_mass = st.session_state["w_mass"]
 w_eff = st.session_state["w_eff"]
@@ -469,15 +461,10 @@ F_rr = crr * m * G
 E_rr = F_rr * d_total / 1e6
 
 E_tractive = E_accel + E_drag + E_rr
-E_recovered = (regen_pct / 100.0) * E_accel
-aux_factor = 1 + aux_pct / 100.0
 
-E_daily_conv = E_tractive * aux_factor
-E_daily_hybrid = (E_tractive - E_recovered) * aux_factor
-
-E_src_diesel = E_daily_conv / ETA_DIESEL
-E_src_h2 = E_daily_hybrid / ETA_H2
-E_src_bev = E_daily_hybrid / ETA_BEV
+E_src_diesel = E_tractive / ETA_DIESEL
+E_src_h2 = E_tractive / ETA_H2
+E_src_bev = E_tractive / ETA_BEV
 
 diesel_kg = E_src_diesel / DIESEL_LHV
 diesel_L = diesel_kg / DIESEL_DENSITY
@@ -827,14 +814,12 @@ with tab1:
       e_dr = F_drag * d_cr_s / 1e6
       e_rr = F_rr * d_m / 1e6
       e_t = e_acc + e_dr + e_rr
-      conv = e_t * aux_factor
-      hyb = (e_t - (regen_pct / 100.0) * e_acc) * aux_factor
       if tech == "Diesel":
-        sys_m = (conv / ETA_DIESEL / DIESEL_LHV) * (1 + diesel_tank_pct / 100.0)
+        sys_m = (e_t / ETA_DIESEL / DIESEL_LHV) * (1 + diesel_tank_pct / 100.0)
       elif tech == "Hydrogen Fuel Cell":
-        sys_m = (hyb / ETA_H2 / H2_LHV) / (h2_grav / 100.0)
+        sys_m = (e_t / ETA_H2 / H2_LHV) / (h2_grav / 100.0)
       else:
-        kwh = hyb / ETA_BEV / MJ_PER_KWH / (dod / 100.0)
+        kwh = e_t / ETA_BEV / MJ_PER_KWH / (dod / 100.0)
         sys_m = kwh / (BATT_DENSITY_KWH * pack_factor)
       ys.append(rated_capacity_kg - sys_m)
     fig_p.add_trace(
@@ -1028,13 +1013,10 @@ with tab2:
 
     st.markdown(
         "<div class='eq-card'><div class='eq-num'>Equation 06</div>"
-        "<div class='eq-title'>Total tractive demand with auxiliaries</div>",
+        "<div class='eq-title'>Total daily tractive energy</div>",
         unsafe_allow_html=True,
     )
-    st.latex(
-        r"E_{tract} = \left(E_{acc}+E_{d}+E_{rr}-\eta_{regen}E_{acc}\right)"
-        r"\left(1+\alpha_{aux}\right)"
-    )
+    st.latex(r"E_{\text{tractive}} = E_{acc} + E_d + E_{rr}")
 
 
 # ==========================================================
