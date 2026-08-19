@@ -53,7 +53,12 @@ st.markdown(
         max-width: 1320px;
       }}
 
-      #MainMenu, footer, header {{ visibility: hidden; }}
+      /* Hide header elements BUT bring back the sidebar toggle button */
+      #MainMenu, footer {{ visibility: hidden; }}
+      header {{ visibility: hidden; }}
+      [data-testid="stSidebarCollapsedControl"] {{
+        visibility: visible !important;
+      }}
 
       /* ---------- Typography ---------- */
       .eyebrow {{
