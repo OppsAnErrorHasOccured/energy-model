@@ -15,18 +15,11 @@ st.set_page_config(
 )
 
 # ==========================================================
-# DESIGN TOKENS — SAMURAI / NAVY DARK MODE
+# DESIGN TOKENS & DYNAMIC THEME CSS
 # ==========================================================
-INK = "#f0f4f8"          # primary light text (replaces black)
-SUBTLE = "#94a3b8"       # secondary muted text
-HAIRLINE = "#1e293b"     # subtle dividers
-CANVAS = "#0b1320"       # page background (deep Samurai Blue)
-SURFACE = "#131c2e"      # card background (dark steel navy)
-ACCENT = "#38bdf8"       # vibrant sky blue accent
-
-C_DIESEL = "#94a3b8"     # slate grey
-C_HYDROGEN = "#818cf8"   # indigo blue
-C_BATTERY = "#34d399"    # emerald green
+C_DIESEL = "#8e8e93"     # graphite / slate
+C_HYDROGEN = "#6366f1"   # indigo
+C_BATTERY = "#10b981"    # emerald green
 
 TECH_COLORS = {
     "Diesel": C_DIESEL,
@@ -35,234 +28,262 @@ TECH_COLORS = {
 }
 
 st.markdown(
-    f"""
+    """
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-      html, body, [class*="css"], .stApp {{
+      /* ---------- DYNAMIC COLOR VARIABLES (LIGHT MODE DEFAULT) ---------- */
+      :root {
+        --ink: #1d1d1f;
+        --subtle: #6e6e73;
+        --hairline: #e2e8f0;
+        --canvas: #f8fafc;
+        --surface: #ffffff;
+        --accent: #0071e3;
+        --hero-bg: linear-gradient(160deg, #ffffff 0%, #f0f4fb 100%);
+        --shadow: rgba(0, 0, 0, 0.05);
+        --plot-bg: #ffffff;
+      }
+
+      /* ---------- DARK MODE OVERRIDES ---------- */
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ink: #f0f4f8;
+          --subtle: #94a3b8;
+          --hairline: #1e293b;
+          --canvas: #0b1320;
+          --surface: #131c2e;
+          --accent: #38bdf8;
+          --hero-bg: linear-gradient(160deg, #182338 0%, #0f172a 100%);
+          --shadow: rgba(0, 0, 0, 0.3);
+          --plot-bg: #131c2e;
+        }
+      }
+
+      html, body, [class*="css"], .stApp {
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
                      "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
-        color: {INK};
-      }}
+        color: var(--ink);
+      }
 
-      .stApp {{ background: {CANVAS}; }}
+      .stApp { background: var(--canvas); }
 
-      .block-container {{
+      .block-container {
         padding-top: 2.2rem;
         padding-bottom: 4rem;
         max-width: 1320px;
-      }}
+      }
 
       /* ---------- HEADER FIX FOR SIDEBAR BUTTON ---------- */
-      header[data-testid="stHeader"] {{
+      header[data-testid="stHeader"] {
         background: transparent !important;
         z-index: 99999 !important;
-      }}
+      }
       
-      #MainMenu, footer, [data-testid="stDecoration"], [data-testid="stStatusWidget"] {{
+      #MainMenu, footer, [data-testid="stDecoration"], [data-testid="stStatusWidget"] {
         visibility: hidden !important;
         display: none !important;
-      }}
+      }
 
       [data-testid="stSidebarCollapsedControl"], 
-      [data-testid="stSidebarExpandButton"] {{
+      [data-testid="stSidebarExpandButton"] {
         visibility: visible !important;
         display: flex !important;
         opacity: 1 !important;
-        color: {INK} !important;
-      }}
+        color: var(--ink) !important;
+      }
 
       /* ---------- Typography ---------- */
-      .eyebrow {{
+      .eyebrow {
         font-size: 0.78rem;
         font-weight: 600;
         letter-spacing: 0.09em;
         text-transform: uppercase;
-        color: {SUBTLE};
+        color: var(--subtle);
         margin-bottom: 0.55rem;
-      }}
-      .headline {{
+      }
+      .headline {
         font-size: 3.15rem;
         font-weight: 600;
         letter-spacing: -0.028em;
         line-height: 1.05;
-        color: {INK};
+        color: var(--ink);
         margin: 0 0 0.55rem 0;
-      }}
-      .subhead {{
+      }
+      .subhead {
         font-size: 1.16rem;
         font-weight: 400;
-        color: {SUBTLE};
+        color: var(--subtle);
         letter-spacing: -0.01em;
         line-height: 1.5;
         max-width: 62ch;
         margin-bottom: 2.1rem;
-      }}
-      .section-title {{
+      }
+      .section-title {
         font-size: 1.55rem;
         font-weight: 600;
         letter-spacing: -0.02em;
-        color: {INK};
+        color: var(--ink);
         margin: 0 0 0.25rem 0;
-      }}
-      .section-note {{
+      }
+      .section-note {
         font-size: 0.95rem;
-        color: {SUBTLE};
+        color: var(--subtle);
         margin-bottom: 1.1rem;
-      }}
+      }
 
       /* ---------- Cards ---------- */
-      .card {{
-        background: {SURFACE};
+      .card {
+        background: var(--surface);
         border-radius: 20px;
         padding: 1.6rem 1.75rem;
-        border: 1px solid {HAIRLINE};
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--hairline);
+        box-shadow: 0 4px 20px var(--shadow);
         margin-bottom: 1.1rem;
-      }}
+      }
 
       /* ---------- Hero: the recommendation ---------- */
-      .hero {{
-        background: linear-gradient(160deg, #182338 0%, #0f172a 100%);
+      .hero {
+        background: var(--hero-bg);
         border-radius: 26px;
         padding: 2.1rem 2.3rem 1.9rem 2.3rem;
-        border: 1px solid {HAIRLINE};
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--hairline);
+        box-shadow: 0 10px 30px var(--shadow);
         margin-bottom: 1.35rem;
-      }}
-      .hero-label {{
+      }
+      .hero-label {
         font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
-        text-transform: uppercase; color: {SUBTLE};
-      }}
-      .hero-tech {{
+        text-transform: uppercase; color: var(--subtle);
+      }
+      .hero-tech {
         font-size: 2.55rem; font-weight: 600; letter-spacing: -0.03em;
         line-height: 1.1; margin: 0.35rem 0 0.15rem 0;
-      }}
-      .hero-reason {{
-        font-size: 1.0rem; color: {SUBTLE}; line-height: 1.55;
+      }
+      .hero-reason {
+        font-size: 1.0rem; color: var(--subtle); line-height: 1.55;
         max-width: 52ch; margin-top: 0.5rem;
-      }}
-      .hero-score {{
+      }
+      .hero-score {
         font-size: 5.6rem; font-weight: 600; letter-spacing: -0.045em;
         line-height: 0.92; text-align: right;
-      }}
-      .hero-score-unit {{
-        font-size: 1.6rem; font-weight: 500; color: {SUBTLE};
+      }
+      .hero-score-unit {
+        font-size: 1.6rem; font-weight: 500; color: var(--subtle);
         letter-spacing: -0.02em;
-      }}
-      .hero-score-cap {{
+      }
+      .hero-score-cap {
         text-align: right; font-size: 0.78rem; font-weight: 600;
-        letter-spacing: 0.1em; text-transform: uppercase; color: {SUBTLE};
+        letter-spacing: 0.1em; text-transform: uppercase; color: var(--subtle);
         margin-top: 0.45rem;
-      }}
+      }
 
       /* ---------- Score cards ---------- */
-      .score-card {{
-        background: {SURFACE};
+      .score-card {
+        background: var(--surface);
         border-radius: 20px;
         padding: 1.35rem 1.5rem 1.5rem 1.5rem;
-        border: 1px solid {HAIRLINE};
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        border: 1px solid var(--hairline);
+        box-shadow: 0 4px 20px var(--shadow);
         height: 100%;
-      }}
-      .score-card.win {{ box-shadow: 0 0 0 2px {ACCENT}, 0 10px 30px rgba(56, 189, 248, 0.25); }}
-      .score-tech {{
+      }
+      .score-card.win { box-shadow: 0 0 0 2px var(--accent), 0 10px 30px var(--shadow); }
+      .score-tech {
         font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em;
-        color: {INK}; display: flex; align-items: center; gap: 0.5rem;
-      }}
-      .dot {{ width: 9px; height: 9px; border-radius: 50%; display: inline-block; }}
-      .score-value {{
+        color: var(--ink); display: flex; align-items: center; gap: 0.5rem;
+      }
+      .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+      .score-value {
         font-size: 3.3rem; font-weight: 600; letter-spacing: -0.04em;
         line-height: 1.05; margin-top: 0.5rem;
-      }}
-      .score-sub {{ font-size: 0.83rem; color: {SUBTLE}; letter-spacing: 0.01em; }}
-      .bar-track {{
-        height: 6px; border-radius: 99px; background: #1e293b;
+      }
+      .score-sub { font-size: 0.83rem; color: var(--subtle); letter-spacing: 0.01em; }
+      .bar-track {
+        height: 6px; border-radius: 99px; background: var(--hairline);
         margin: 0.95rem 0 0.85rem 0; overflow: hidden;
-      }}
-      .bar-fill {{ height: 6px; border-radius: 99px; }}
-      .kv {{
+      }
+      .bar-fill { height: 6px; border-radius: 99px; }
+      .kv {
         display: flex; justify-content: space-between;
         font-size: 0.88rem; padding: 0.28rem 0;
-        border-bottom: 1px solid #1e293b;
-      }}
-      .kv:last-child {{ border-bottom: none; }}
-      .kv span:first-child {{ color: {SUBTLE}; }}
-      .kv span:last-child {{ font-weight: 500; color: {INK}; font-variant-numeric: tabular-nums; }}
-      .score-card.out {{ opacity: 0.5; }}
-      .badge.fail {{ background: #f87171; }}
-      .kv span.warn {{ color: #f87171; font-weight: 600; }}
-      .badge {{
-        display: inline-block; background: {ACCENT}; color: #0b1320;
+        border-bottom: 1px solid var(--hairline);
+      }
+      .kv:last-child { border-bottom: none; }
+      .kv span:first-child { color: var(--subtle); }
+      .kv span:last-child { font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+      .score-card.out { opacity: 0.5; }
+      .badge.fail { background: #f87171; }
+      .kv span.warn { color: #f87171; font-weight: 600; }
+      .badge {
+        display: inline-block; background: var(--accent); color: #ffffff;
         font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em;
         text-transform: uppercase; padding: 0.2rem 0.55rem;
         border-radius: 99px; margin-left: 0.4rem;
-      }}
+      }
 
       /* ---------- Weight budget ---------- */
-      .budget-track {{
-        height: 8px; border-radius: 99px; background: #1e293b;
+      .budget-track {
+        height: 8px; border-radius: 99px; background: var(--hairline);
         overflow: hidden; margin: 0.4rem 0 0.35rem 0;
-      }}
-      .budget-fill {{ height: 8px; border-radius: 99px; background: {ACCENT}; }}
-      .budget-fill.full {{ background: #34d399; }}
-      .budget-text {{ font-size: 0.82rem; color: {SUBTLE}; }}
+      }
+      .budget-fill { height: 8px; border-radius: 99px; background: var(--accent); }
+      .budget-fill.full { background: #34d399; }
+      .budget-text { font-size: 0.82rem; color: var(--subtle); }
 
       /* ---------- Equation blocks ---------- */
-      .eq-card {{
-        background: {SURFACE}; border-radius: 18px; padding: 1.35rem 1.5rem;
-        border: 1px solid {HAIRLINE};
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      .eq-card {
+        background: var(--surface); border-radius: 18px; padding: 1.35rem 1.5rem;
+        border: 1px solid var(--hairline);
+        box-shadow: 0 4px 15px var(--shadow);
         margin-bottom: 1rem;
-      }}
-      .eq-num {{
+      }
+      .eq-num {
         font-size: 0.74rem; font-weight: 600; letter-spacing: 0.1em;
-        color: {ACCENT}; text-transform: uppercase;
-      }}
-      .eq-title {{
+        color: var(--accent); text-transform: uppercase;
+      }
+      .eq-title {
         font-size: 1.12rem; font-weight: 600; letter-spacing: -0.015em;
-        color: {INK}; margin: 0.2rem 0 0.15rem 0;
-      }}
-      .eq-body {{ font-size: 0.9rem; color: {SUBTLE}; line-height: 1.6; }}
-      .eq-body b {{ color: {INK}; font-weight: 500; }}
+        color: var(--ink); margin: 0.2rem 0 0.15rem 0;
+      }
+      .eq-body { font-size: 0.9rem; color: var(--subtle); line-height: 1.6; }
+      .eq-body b { color: var(--ink); font-weight: 500; }
 
       /* ---------- Sidebar ---------- */
-      [data-testid="stSidebar"] {{
-        background: {SURFACE};
-        border-right: 1px solid {HAIRLINE};
-      }}
-      [data-testid="stSidebar"] .block-container {{ padding-top: 1.5rem; }}
-      .derived {{
+      [data-testid="stSidebar"] {
+        background: var(--surface);
+        border-right: 1px solid var(--hairline);
+      }
+      [data-testid="stSidebar"] .block-container { padding-top: 1.5rem; }
+      .derived {
         display: flex; justify-content: space-between; align-items: baseline;
-        background: {CANVAS}; border-radius: 10px;
+        background: var(--canvas); border-radius: 10px;
         padding: 0.45rem 0.7rem; margin-top: 0.4rem;
-        font-size: 0.83rem; color: {SUBTLE};
-      }}
-      .derived b {{ color: {INK}; font-variant-numeric: tabular-nums; font-weight: 600; }}
-      .derived i {{ color: {ACCENT}; font-style: normal; font-weight: 500; }}
+        font-size: 0.83rem; color: var(--subtle);
+      }
+      .derived b { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 600; }
+      .derived i { color: var(--accent); font-style: normal; font-weight: 500; }
 
-      .side-group {{
+      .side-group {
         font-size: 0.74rem; font-weight: 600; letter-spacing: 0.1em;
-        text-transform: uppercase; color: {SUBTLE};
+        text-transform: uppercase; color: var(--subtle);
         margin: 1.35rem 0 0.35rem 0;
-      }}
+      }
 
       /* ---------- Tabs ---------- */
-      .stTabs [data-baseweb="tab-list"] {{
-        gap: 0.35rem; border-bottom: 1px solid {HAIRLINE};
-      }}
-      .stTabs [data-baseweb="tab"] {{
+      .stTabs [data-baseweb="tab-list"] {
+        gap: 0.35rem; border-bottom: 1px solid var(--hairline);
+      }
+      .stTabs [data-baseweb="tab"] {
         font-size: 0.95rem; font-weight: 500; letter-spacing: -0.01em;
-        padding: 0.55rem 0.9rem; color: {SUBTLE};
-      }}
-      .stTabs [aria-selected="true"] {{ color: {INK}; font-weight: 600; border-bottom-color: {ACCENT} !important; }}
+        padding: 0.55rem 0.9rem; color: var(--subtle);
+      }
+      .stTabs [aria-selected="true"] { color: var(--ink); font-weight: 600; border-bottom-color: var(--accent) !important; }
 
       /* ---------- Controls ---------- */
-      .stSlider [data-baseweb="slider"] div[role="slider"] {{
-        box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-      }}
-      div[data-testid="stDataFrame"] {{ border-radius: 14px; overflow: hidden; border: 1px solid {HAIRLINE}; }}
-      hr.rule {{ border: none; border-top: 1px solid {HAIRLINE}; margin: 2.4rem 0 1.8rem 0; }}
+      .stSlider [data-baseweb="slider"] div[role="slider"] {
+        box-shadow: 0 1px 4px var(--shadow);
+      }
+      div[data-testid="stDataFrame"] { border-radius: 14px; overflow: hidden; border: 1px solid var(--hairline); }
+      hr.rule { border: none; border-top: 1px solid var(--hairline); margin: 2.4rem 0 1.8rem 0; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -336,11 +357,6 @@ st.session_state.setdefault("_capped", None)
 
 
 def clamp_weights(changed_key: str) -> None:
-    """Keep the five weight sliders from ever summing above 100%.
-
-    Runs before the rerun that redraws the sidebar, so an overshoot is written
-    back down to the remaining headroom and the user sees the corrected value.
-    """
     others = sum(st.session_state[k] for k in WEIGHTS if k != changed_key)
     headroom = max(WEIGHT_CAP - others, 0)
     if st.session_state[changed_key] > headroom:
@@ -355,11 +371,11 @@ def clamp_weights(changed_key: str) -> None:
 # ==========================================================
 with st.sidebar:
     st.markdown(
-        f"<div style='font-size:1.15rem;font-weight:600;letter-spacing:-0.02em;color:{INK};'>"
-        f"Model inputs</div>"
-        f"<div style='font-size:0.86rem;color:{SUBTLE};margin-top:0.15rem;'>"
-        f"Set the route, the prices and what matters to you. Everything else "
-        f"lives under Advanced settings.</div>",
+        "<div style='font-size:1.15rem;font-weight:600;letter-spacing:-0.02em;color:var(--ink);'>"
+        "Model inputs</div>"
+        "<div style='font-size:0.86rem;color:var(--subtle);margin-top:0.15rem;'>"
+        "Set the route, the prices and what matters to you. Everything else "
+        "lives under Advanced settings.</div>",
         unsafe_allow_html=True,
     )
 
@@ -639,7 +655,7 @@ results = pd.DataFrame(
 # ==========================================================
 def score_card(tech: str, score: float, rows: list, winner: bool,
                ok: bool = True) -> str:
-    color = TECH_COLORS[tech] if ok else "#64748b"
+    color = TECH_COLORS[tech] if ok else "var(--subtle)"
     badge = "<span class='badge'>Recommended</span>" if winner else ""
     if not ok:
         badge = "<span class='badge fail'>Payload short</span>"
@@ -792,23 +808,20 @@ with tab1:
             )
         )
     fig_p.add_hline(
-        y=required_payload, line_dash="dash", line_color="#f87171",
+        y=required_payload, line_dash="dash", line_color="#ef4444",
         annotation_text=f"Required payload — {required_payload:,.0f} kg",
-        annotation_position="bottom right",
-        annotation_font_color="#f87171"
+        annotation_position="bottom right"
     )
-    fig_p.add_vline(x=route_dist, line_dash="dot", line_color=SUBTLE,
-                    annotation_text="Your route", annotation_position="top left",
-                    annotation_font_color=SUBTLE)
+    fig_p.add_vline(x=route_dist, line_dash="dot", line_color="#64748b",
+                    annotation_text="Your route", annotation_position="top left")
     fig_p.update_layout(
-        template="plotly_dark", height=420,
+        template="none", height=420,
         margin=dict(l=10, r=10, t=30, b=10),
-        font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
-                  color=INK, size=12),
+        font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif", size=12),
         legend=dict(orientation="h", y=1.12, x=0, title=None),
-        xaxis_title="Daily route distance (miles)",
-        yaxis_title="Payload capacity remaining (kg)",
-        hovermode="x unified", plot_bgcolor=SURFACE, paper_bgcolor=CANVAS,
+        xaxis=dict(title="Daily route distance (miles)", gridcolor="rgba(150,150,150,0.15)"),
+        yaxis=dict(title="Payload capacity remaining (kg)", gridcolor="rgba(150,150,150,0.15)"),
+        hovermode="x unified", plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig_p, **FULL)
 
@@ -834,7 +847,7 @@ with tab1:
             },
             index=TECHS,
         )
-        palette = ["#38bdf8", "#818cf8", "#34d399", "#fbbf24", "#f87171"]
+        palette = ["#38bdf8", "#818cf8", "#34d399", "#fbbf24", "#ef4444"]
         fig_c = go.Figure()
         for j, col in enumerate(contrib.columns):
             fig_c.add_bar(
@@ -846,15 +859,15 @@ with tab1:
             )
         fig_c.update_layout(
             barmode="stack",
-            template="plotly_dark",
+            template="none",
             height=380,
             margin=dict(l=10, r=10, t=10, b=10),
-            font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
-                      color=INK, size=12),
+            font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif", size=12),
             legend=dict(orientation="h", y=-0.18, x=0, title=None),
-            yaxis_title="Points",
-            plot_bgcolor=SURFACE,
-            paper_bgcolor=CANVAS,
+            xaxis=dict(gridcolor="rgba(150,150,150,0.15)"),
+            yaxis=dict(title="Points", gridcolor="rgba(150,150,150,0.15)"),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
         )
         st.plotly_chart(fig_c, **FULL)
 
@@ -883,14 +896,14 @@ with tab1:
             )
         )
         fig_b.update_layout(
-            template="plotly_dark",
+            template="none",
             height=380,
             margin=dict(l=10, r=40, t=10, b=10),
-            font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
-                      color=INK, size=12),
-            xaxis_title="MJ per day",
-            plot_bgcolor=SURFACE,
-            paper_bgcolor=CANVAS,
+            font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif", size=12),
+            xaxis=dict(title="MJ per day", gridcolor="rgba(150,150,150,0.15)"),
+            yaxis=dict(gridcolor="rgba(150,150,150,0.15)"),
+            plot_bgcolor="rgba(0,0,0,0)",
+            paper_bgcolor="rgba(0,0,0,0)",
         )
         st.plotly_chart(fig_b, **FULL)
 
@@ -933,17 +946,16 @@ with tab1:
             )
         )
     fig_t.update_layout(
-        template="plotly_dark",
+        template="none",
         height=420,
         margin=dict(l=10, r=10, t=10, b=10),
-        font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif",
-                  color=INK, size=12),
+        font=dict(family="-apple-system, BlinkMacSystemFont, Inter, sans-serif", size=12),
         legend=dict(orientation="h", y=1.08, x=0, title=None),
-        xaxis_title="Year",
-        yaxis_title="Cumulative cost ($)",
+        xaxis=dict(title="Year", gridcolor="rgba(150,150,150,0.15)"),
+        yaxis=dict(title="Cumulative cost ($)", gridcolor="rgba(150,150,150,0.15)"),
         hovermode="x unified",
-        plot_bgcolor=SURFACE,
-        paper_bgcolor=CANVAS,
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
     )
     st.plotly_chart(fig_t, **FULL)
 
@@ -987,16 +999,16 @@ with tab2:
     )
 
     st.markdown(
-        f"""
+        """
         <div class='card'>
-          <div style='display:flex;flex-wrap:wrap;gap:1.6rem;font-size:0.92rem;color:{INK};'>
-            <div><b>Stage 1</b><br><span style='color:{SUBTLE};'>Road load → wheel energy</span></div>
-            <div style='color:{SUBTLE};'>→</div>
-            <div><b>Stage 2</b><br><span style='color:{SUBTLE};'>Wheel energy ÷ efficiency</span></div>
-            <div style='color:{SUBTLE};'>→</div>
-            <div><b>Stage 3</b><br><span style='color:{SUBTLE};'>Energy → fuel, cost, CO₂</span></div>
-            <div style='color:{SUBTLE};'>→</div>
-            <div><b>Stage 4</b><br><span style='color:{SUBTLE};'>Normalize and weight</span></div>
+          <div style='display:flex;flex-wrap:wrap;gap:1.6rem;font-size:0.92rem;color:var(--ink);'>
+            <div><b>Stage 1</b><br><span style='color:var(--subtle);'>Road load → wheel energy</span></div>
+            <div style='color:var(--subtle);'>→</div>
+            <div><b>Stage 2</b><br><span style='color:var(--subtle);'>Wheel energy ÷ efficiency</span></div>
+            <div style='color:var(--subtle);'>→</div>
+            <div><b>Stage 3</b><br><span style='color:var(--subtle);'>Energy → fuel, cost, CO₂</span></div>
+            <div style='color:var(--subtle);'>→</div>
+            <div><b>Stage 4</b><br><span style='color:var(--subtle);'>Normalize and weight</span></div>
           </div>
         </div>
         """,
@@ -1386,7 +1398,7 @@ with tab2:
 
     # ---------- Limitations ----------
     st.markdown(
-        f"""
+        """
         <div class='card' style='margin-top:1.2rem;'>
           <div class='eq-title'>What this model does not capture</div>
           <div class='eq-body' style='margin-top:0.5rem;'>
@@ -1433,17 +1445,17 @@ with tab3:
         st.markdown(
             f"<iframe src='data:application/pdf;base64,{base64_pdf}' width='100%' "
             f"height='820' style='border:none;border-radius:18px;"
-            f"box-shadow:0 8px 28px rgba(0,0,0,0.5);'></iframe>",
+            f"box-shadow:0 8px 28px var(--shadow);'></iframe>",
             unsafe_allow_html=True,
         )
     except FileNotFoundError:
         st.markdown(
-            f"""
+            """
             <div class='card' style='text-align:center;padding:3.2rem 2rem;'>
-              <div style='font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:{INK};'>
+              <div style='font-size:1.25rem;font-weight:600;letter-spacing:-0.02em;color:var(--ink);'>
                 No report loaded yet
               </div>
-              <div style='color:{SUBTLE};font-size:0.95rem;margin-top:0.5rem;
+              <div style='color:var(--subtle);font-size:0.95rem;margin-top:0.5rem;
                           max-width:46ch;margin-left:auto;margin-right:auto;'>
                 Add a file named <b>technical_report.pdf</b> to the same folder as
                 this app, then reload the page to read it here.
@@ -1454,8 +1466,8 @@ with tab3:
         )
 
 st.markdown(
-    f"<div style='text-align:center;color:{SUBTLE};font-size:0.8rem;"
-    f"margin-top:2.5rem;'>Energy figures are modeled estimates for comparison "
-    f"between powertrains, not manufacturer specifications.</div>",
+    "<div style='text-align:center;color:var(--subtle);font-size:0.8rem;"
+    "margin-top:2.5rem;'>Energy figures are modeled estimates for comparison "
+    "between powertrains, not manufacturer specifications.</div>",
     unsafe_allow_html=True,
 )
