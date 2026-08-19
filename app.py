@@ -53,22 +53,27 @@ st.markdown(
         max-width: 1320px;
       }}
 
-/* Hide standard header elements */
-#MainMenu, footer {{ visibility: hidden; }}
-header {{ visibility: hidden; }}
+      /* ---------- HEADER FIX FOR SIDEBAR BUTTON ---------- */
+      /* Keep the header container visible/transparent so sidebar toggle icon remains functional */
+      header[data-testid="stHeader"] {{
+        background: transparent !important;
+        z-index: 99999 !important;
+      }}
+      
+      /* Hide top decor line, menu button, and footer */
+      #MainMenu, footer, [data-testid="stDecoration"], [data-testid="stStatusWidget"] {{
+        visibility: hidden !important;
+        display: none !important;
+      }}
 
-/* Force BOTH the open and close sidebar buttons to stay visible */
-[data-testid="stSidebarCollapsedControl"],
-[data-testid="stSidebarHeader"] {{
-  visibility: visible !important;
-}}
-
-/* Move the open button down slightly so it isn't cut off at the very top */
-[data-testid="stSidebarCollapsedControl"] {{
-  top: 0.5rem;
-  left: 0.5rem;
-  z-index: 999999;
-}}
+      /* Force sidebar control button to stay visible, styled, and clickable */
+      [data-testid="stSidebarCollapsedControl"], 
+      [data-testid="stSidebarExpandButton"] {{
+        visibility: visible !important;
+        display: flex !important;
+        opacity: 1 !important;
+        color: {INK} !important;
+      }}
 
       /* ---------- Typography ---------- */
       .eyebrow {{
